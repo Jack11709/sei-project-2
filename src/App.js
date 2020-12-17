@@ -1,8 +1,22 @@
 import React from 'react'
 
 function App() {
-  console.log('Change')
-  return <h1>Hello World</h1>
+  const [count, setCount] = React.useState(() => {
+    const currentCount = window.localStorage.getItem('count')
+    if (currentCount) return JSON.parse(currentCount)
+    return { current: 0 }
+  })
+
+  React.useEffect(() => {
+    window.localStorage.setItem('count', JSON.stringify(count))
+  }, [count])
+
+  return (
+    <>
+      <h1>Count: {count.current}</h1>
+      <button onClick={() => setCount({ current: count.current + 1 })}>Increase</button>
+    </>
+  )
 }
 
 export default App
